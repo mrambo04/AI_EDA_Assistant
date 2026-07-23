@@ -115,8 +115,8 @@ This project is licensed under the MIT License.
 
 **Rambabu Bevara**
 
-- GitHub: https://github.com/YourUsername
-- LinkedIn: https://www.linkedin.com/in/your-linkedin-profile
+- GitHub: https://github.com/mrambo04
+- LinkedIn: https://www.linkedin.com/in/rambabu-bevara-/
 
 ---
 
