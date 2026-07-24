@@ -1,11 +1,8 @@
-import os
-from dotenv import load_dotenv
+import streamlit as st
 import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
 
-load_dotenv()
-
-API_KEY = os.getenv("GEMINI_API_KEY")
+API_KEY = st.secrets["GEMINI_API_KEY"]
 
 genai.configure(api_key=API_KEY)
 
@@ -20,13 +17,11 @@ def generate_insights(prompt):
         return """
 🚫 **Gemini API quota exceeded**
 
-You have reached the free API request limit.
-
-Please wait for the quota to reset or use a new API key.
+Please try again later or use another API key.
 """
 
     except Exception as e:
-        return f"❌ Error: {str(e)}"
+        return f"❌ Error: {e}"
 
 
 
