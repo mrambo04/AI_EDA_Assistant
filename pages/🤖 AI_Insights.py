@@ -2,7 +2,11 @@ import streamlit as st
 
 from modules.ai import generate_insights
 
-st.set_page_config(layout="wide")
+st.set_page_config(
+    page_title="AI Insights",
+    page_icon="🤖",
+    layout="wide"
+)
 
 st.title("🤖 AI Insights")
 
@@ -12,39 +16,80 @@ if "df" not in st.session_state:
 
 df = st.session_state["df"]
 
-st.write("Click the button to generate AI insights.")
+st.write("Generate AI-powered insights for your dataset.")
 
-if st.button("Generate AI Report"):
+if st.button("🚀 Generate AI Report"):
 
-    prompt = f"""
+    with st.spinner("Analyzing dataset with Gemini AI..."):
+
+        try:
+
+            sample_data = df.head(5).to_string()
+
+            statistics = df.describe(include="all").fillna("").head().to_string()
+
+            missing_values = df.isnull().sum().to_string()
+
+            data_types = df.dtypes.to_string()
+
+            prompt = f"""
 You are an expert Data Analyst.
 
-Analyze this dataset summary.
+Analyze the following dataset.
+
+Dataset Information
 
 Rows: {df.shape[0]}
 Columns: {df.shape[1]}
 
-Data Types:
-{df.dtypes}
+Column Data Types
 
-Missing Values:
-{df.isnull().sum()}
+{data_types}
 
-Statistics:
-{df.describe(include='all')}
+Missing Values
 
-Provide:
+{missing_values}
+
+Statistical Summary
+
+{statistics}
+
+Sample Data
+
+{sample_data}
+
+Provide the following:
 
 1. Dataset Summary
+
 2. Data Quality Issues
+
 3. Missing Value Suggestions
+
 4. Outlier Suggestions
+
 5. Correlation Suggestions
+
 6. Recommended Machine Learning Problem
-7. Overall Conclusion
+
+7. Feature Engineering Suggestions
+
+8. Overall Conclusion
+
+Keep the response professional and easy to understand.
 """
 
-    with st.spinner("Generating AI Insights..."):
-        answer = generate_insights(prompt)
+            # Prevent huge prompts
+            if len(prompt) > 25000:
+                st.error("Dataset is too large for AI analysis. Please upload a smaller dataset.")
+                st.stop()
 
-    st.markdown(answer)
+            answer = generate_insights(prompt)
+
+            st.success("AI Report Generated Successfully!")
+
+            st.markdown(answer)
+
+        except Exception as e:
+
+            st.error(f"Error: {e}")
