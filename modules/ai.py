@@ -8,6 +8,7 @@ genai.configure(api_key=API_KEY)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
+
 def generate_insights(prompt):
     try:
         response = model.generate_content(prompt)
@@ -15,7 +16,7 @@ def generate_insights(prompt):
 
     except ResourceExhausted:
         return """
-🚫 **Gemini API quota exceeded**
+ **Limit exceeded come after sometime**
 
 Please try again later or use another API key.
 """
